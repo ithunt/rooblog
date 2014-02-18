@@ -1,0 +1,14 @@
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-02-17 22:44:52
+project --topLevelPackage com.iancodes.rooblog
+hint
+jpa setup --provider HIBERNATE --database HYPERSONIC_IN_MEMORY 
+entity jpa --class com.iancodes.rooblog.model.BlogUser
+field string name
+field date --fieldName created --type java.util.Date 
+entity jpa --class ~.model.BlogPost
+field string --fieldName text --sizeMax 10000
+field reference --fieldName author --type ~.BlogUser --notNull true
+field date --fieldName created --type java.util.Date --notNull true 
+field date --fieldName posted --type java.util.Date
+field boolean --fieldName hidden 
+field string --fieldName title 
