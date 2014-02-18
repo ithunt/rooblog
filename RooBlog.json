@@ -1,0 +1,10 @@
+{"id":"0d807b8d-b55d-0202-53f7-23fef7206218",
+    "name":"RooBlog",
+    "timestamp":1392696208729,
+    "requests":[
+        {"collectionId":"0d807b8d-b55d-0202-53f7-23fef7206218",
+            "id":"85e54526-de70-99e1-9d25-d854eb5b4631",
+            "name":"New User",
+            "description":"",
+            "url":"http://localhost:8080/rooblog/blogusers",
+            "method":"POST","headers":"Accept: application/json\n","data":"{\n\"name\" : \"Ian\",\n\"bio\" : \"developer\"\n}","dataMode":"raw","timestamp":0,"version":2,"time":1392696321470},{"collectionId":"0d807b8d-b55d-0202-53f7-23fef7206218","id":"b84fe5a7-5d98-9ea3-02e2-631ba75a484c","name":"Users","description":"","url":"http://localhost:8080/rooblog/blogusers/","method":"GET","headers":"","data":"{\n\"name\" : \"Ian\",\n\"bio\" : \"developer\"\n}","dataMode":"params","timestamp":0,"responses":[],"version":2},{"collectionId":"0d807b8d-b55d-0202-53f7-23fef7206218","id":"c747a822-044f-6098-05e4-ce0966fb77de","name":"New Post","description":"","url":"http://localhost:8080/rooblog/blogposts","method":"POST","headers":"","data":"{\n\t\"title\" : \"First!\",\n    \"text\" : \"Welcome everyone\",\n    \"author\" : {\n        \"bio\": \"developer\",\n        \"created\": 1392696222947,\n        \"id\": 1,\n        \"name\": \"Ian\",\n        \"version\": 0\n    }\n\n}","dataMode":"raw","timestamp":0,"version":2,"time":1392696533157}]}
