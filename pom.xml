@@ -49,6 +49,13 @@
         </pluginRepository>
     </pluginRepositories>
     <dependencies>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- General dependencies for standard applications -->
         <dependency>
             <groupId>junit</groupId>
