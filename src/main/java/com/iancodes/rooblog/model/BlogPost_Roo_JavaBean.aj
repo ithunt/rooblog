@@ -57,4 +57,8 @@ privileged aspect BlogPost_Roo_JavaBean {
         this.hidden = hidden;
     }
     
+    public void BlogPost.setLink(String link) {
+        this.link = link;
+    }
+    
 }

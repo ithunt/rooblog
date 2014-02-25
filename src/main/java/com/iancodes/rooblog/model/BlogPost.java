@@ -54,5 +54,9 @@ public class BlogPost {
 
     private Boolean hidden = false;
 
+    private String link;
 
+    public String getLink() {
+        return "http://iancodes.com/rooblog/" + title;
+    }
 }

@@ -12,3 +12,4 @@ field date --fieldName created --type java.util.Date --notNull true
 field date --fieldName posted --type java.util.Date
 field boolean --fieldName hidden 
 field string --fieldName title 
+// Spring Roo 1.2.4.RELEASE [rev 75337cf] log opened at 2014-02-24 21:27:51
