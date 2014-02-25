@@ -7,9 +7,14 @@ Blog is provided as a simple JSON REST service consumed with Angular
 
 ### Starting the App
     mvn clean tomcat:run
+
+### Homepage
     http://localhost:8080/rooblog/
 
-### Resources (GET, POST)
+### RSS Feed
+    http://localhost:8080/rooblog/feeds/posts.rss
+
+### REST Resources (GET, POST)
     /posts
     /users
 
