@@ -23,3 +23,12 @@ Blog is provided as a simple JSON REST service consumed with Angular
 import the following into your postman collections for example GET & POST requests
 	RooBlog.json
 
+* * *
+## Spring Roo Setup with [Homebrew](http://brew.sh/)
+    brew install spring-roo
+    <navigate to project directory>
+    roo
+
+as soon as you can tab complete something such as 'entity' roo has finished indexing.
+	
+
