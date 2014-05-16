@@ -11,6 +11,37 @@ import javax.persistence.TypedQuery;
 
 privileged aspect BlogPost_Roo_Finder {
     
+    public static Long BlogPost.countFindBlogPostsByAuthor(BlogUser author) {
+        if (author == null) throw new IllegalArgumentException("The author argument is required");
+        EntityManager em = BlogPost.entityManager();
+        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM BlogPost AS o WHERE o.author = :author", Long.class);
+        q.setParameter("author", author);
+        return ((Long) q.getSingleResult());
+    }
+    
+    public static Long BlogPost.countFindBlogPostsByCreated(Date created) {
+        if (created == null) throw new IllegalArgumentException("The created argument is required");
+        EntityManager em = BlogPost.entityManager();
+        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM BlogPost AS o WHERE o.created = :created", Long.class);
+        q.setParameter("created", created);
+        return ((Long) q.getSingleResult());
+    }
+    
+    public static Long BlogPost.countFindBlogPostsByTitleLike(String title) {
+        if (title == null || title.length() == 0) throw new IllegalArgumentException("The title argument is required");
+        title = title.replace('*', '%');
+        if (title.charAt(0) != '%') {
+            title = "%" + title;
+        }
+        if (title.charAt(title.length() - 1) != '%') {
+            title = title + "%";
+        }
+        EntityManager em = BlogPost.entityManager();
+        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM BlogPost AS o WHERE LOWER(o.title) LIKE LOWER(:title)", Long.class);
+        q.setParameter("title", title);
+        return ((Long) q.getSingleResult());
+    }
+    
     public static TypedQuery<BlogPost> BlogPost.findBlogPostsByAuthor(BlogUser author) {
         if (author == null) throw new IllegalArgumentException("The author argument is required");
         EntityManager em = BlogPost.entityManager();
@@ -19,10 +50,40 @@ privileged aspect BlogPost_Roo_Finder {
         return q;
     }
     
+    public static TypedQuery<BlogPost> BlogPost.findBlogPostsByAuthor(BlogUser author, String sortFieldName, String sortOrder) {
+        if (author == null) throw new IllegalArgumentException("The author argument is required");
+        EntityManager em = BlogPost.entityManager();
+        String jpaQuery = "SELECT o FROM BlogPost AS o WHERE o.author = :author";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        TypedQuery<BlogPost> q = em.createQuery(jpaQuery, BlogPost.class);
+        q.setParameter("author", author);
+        return q;
+    }
+    
     public static TypedQuery<BlogPost> BlogPost.findBlogPostsByCreated(Date created) {
         if (created == null) throw new IllegalArgumentException("The created argument is required");
         EntityManager em = BlogPost.entityManager();
         TypedQuery<BlogPost> q = em.createQuery("SELECT o FROM BlogPost AS o WHERE o.created = :created", BlogPost.class);
+        q.setParameter("created", created);
+        return q;
+    }
+    
+    public static TypedQuery<BlogPost> BlogPost.findBlogPostsByCreated(Date created, String sortFieldName, String sortOrder) {
+        if (created == null) throw new IllegalArgumentException("The created argument is required");
+        EntityManager em = BlogPost.entityManager();
+        String jpaQuery = "SELECT o FROM BlogPost AS o WHERE o.created = :created";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        TypedQuery<BlogPost> q = em.createQuery(jpaQuery, BlogPost.class);
         q.setParameter("created", created);
         return q;
     }
@@ -38,6 +99,28 @@ privileged aspect BlogPost_Roo_Finder {
         }
         EntityManager em = BlogPost.entityManager();
         TypedQuery<BlogPost> q = em.createQuery("SELECT o FROM BlogPost AS o WHERE LOWER(o.title) LIKE LOWER(:title)", BlogPost.class);
+        q.setParameter("title", title);
+        return q;
+    }
+    
+    public static TypedQuery<BlogPost> BlogPost.findBlogPostsByTitleLike(String title, String sortFieldName, String sortOrder) {
+        if (title == null || title.length() == 0) throw new IllegalArgumentException("The title argument is required");
+        title = title.replace('*', '%');
+        if (title.charAt(0) != '%') {
+            title = "%" + title;
+        }
+        if (title.charAt(title.length() - 1) != '%') {
+            title = title + "%";
+        }
+        EntityManager em = BlogPost.entityManager();
+        String jpaQuery = "SELECT o FROM BlogPost AS o WHERE LOWER(o.title) LIKE LOWER(:title)";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        TypedQuery<BlogPost> q = em.createQuery(jpaQuery, BlogPost.class);
         q.setParameter("title", title);
         return q;
     }

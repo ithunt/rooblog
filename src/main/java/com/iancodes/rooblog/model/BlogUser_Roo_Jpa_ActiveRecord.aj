@@ -14,6 +14,8 @@ privileged aspect BlogUser_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager BlogUser.entityManager;
     
+    public static final List<String> BlogUser.fieldNames4OrderClauseFilter = java.util.Arrays.asList("name", "bio", "created");
+    
     public static final EntityManager BlogUser.entityManager() {
         EntityManager em = new BlogUser().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
@@ -28,6 +30,17 @@ privileged aspect BlogUser_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM BlogUser o", BlogUser.class).getResultList();
     }
     
+    public static List<BlogUser> BlogUser.findAllBlogUsers(String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM BlogUser o";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        return entityManager().createQuery(jpaQuery, BlogUser.class).getResultList();
+    }
+    
     public static BlogUser BlogUser.findBlogUser(Long id) {
         if (id == null) return null;
         return entityManager().find(BlogUser.class, id);
@@ -35,6 +48,17 @@ privileged aspect BlogUser_Roo_Jpa_ActiveRecord {
     
     public static List<BlogUser> BlogUser.findBlogUserEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM BlogUser o", BlogUser.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    }
+    
+    public static List<BlogUser> BlogUser.findBlogUserEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM BlogUser o";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        return entityManager().createQuery(jpaQuery, BlogUser.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional

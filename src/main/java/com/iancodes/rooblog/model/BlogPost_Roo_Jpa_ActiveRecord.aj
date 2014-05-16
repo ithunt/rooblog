@@ -14,6 +14,8 @@ privileged aspect BlogPost_Roo_Jpa_ActiveRecord {
     @PersistenceContext
     transient EntityManager BlogPost.entityManager;
     
+    public static final List<String> BlogPost.fieldNames4OrderClauseFilter = java.util.Arrays.asList("title", "text", "author", "created", "posted", "hidden");
+    
     public static final EntityManager BlogPost.entityManager() {
         EntityManager em = new BlogPost().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
@@ -28,6 +30,17 @@ privileged aspect BlogPost_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM BlogPost o", BlogPost.class).getResultList();
     }
     
+    public static List<BlogPost> BlogPost.findAllBlogPosts(String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM BlogPost o";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        return entityManager().createQuery(jpaQuery, BlogPost.class).getResultList();
+    }
+    
     public static BlogPost BlogPost.findBlogPost(Long id) {
         if (id == null) return null;
         return entityManager().find(BlogPost.class, id);
@@ -35,6 +48,17 @@ privileged aspect BlogPost_Roo_Jpa_ActiveRecord {
     
     public static List<BlogPost> BlogPost.findBlogPostEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM BlogPost o", BlogPost.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    }
+    
+    public static List<BlogPost> BlogPost.findBlogPostEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
+        String jpaQuery = "SELECT o FROM BlogPost o";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        return entityManager().createQuery(jpaQuery, BlogPost.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional

@@ -9,10 +9,33 @@ import javax.persistence.TypedQuery;
 
 privileged aspect BlogUser_Roo_Finder {
     
+    public static Long BlogUser.countFindBlogUsersByNameEquals(String name) {
+        if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
+        EntityManager em = BlogUser.entityManager();
+        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM BlogUser AS o WHERE o.name = :name", Long.class);
+        q.setParameter("name", name);
+        return ((Long) q.getSingleResult());
+    }
+    
     public static TypedQuery<BlogUser> BlogUser.findBlogUsersByNameEquals(String name) {
         if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
         EntityManager em = BlogUser.entityManager();
         TypedQuery<BlogUser> q = em.createQuery("SELECT o FROM BlogUser AS o WHERE o.name = :name", BlogUser.class);
+        q.setParameter("name", name);
+        return q;
+    }
+    
+    public static TypedQuery<BlogUser> BlogUser.findBlogUsersByNameEquals(String name, String sortFieldName, String sortOrder) {
+        if (name == null || name.length() == 0) throw new IllegalArgumentException("The name argument is required");
+        EntityManager em = BlogUser.entityManager();
+        String jpaQuery = "SELECT o FROM BlogUser AS o WHERE o.name = :name";
+        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
+            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
+            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
+                jpaQuery = jpaQuery + " " + sortOrder;
+            }
+        }
+        TypedQuery<BlogUser> q = em.createQuery(jpaQuery, BlogUser.class);
         q.setParameter("name", name);
         return q;
     }

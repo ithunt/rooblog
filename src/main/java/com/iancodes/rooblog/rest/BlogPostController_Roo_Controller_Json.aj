@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriComponentsBuilder;
 
 privileged aspect BlogPostController_Roo_Controller_Json {
     
@@ -48,11 +49,13 @@ privileged aspect BlogPostController_Roo_Controller_Json {
     }
     
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> BlogPostController.createFromJson(@RequestBody String json) {
+    public ResponseEntity<String> BlogPostController.createFromJson(@RequestBody String json, UriComponentsBuilder uriBuilder) {
         BlogPost blogPost = BlogPost.fromJsonToBlogPost(json);
         blogPostService.saveBlogPost(blogPost);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
+        RequestMapping a = (RequestMapping) getClass().getAnnotation(RequestMapping.class);
+        headers.add("Location",uriBuilder.path(a.value()[0]+"/"+blogPost.getId().toString()).build().toUriString());
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
@@ -71,6 +74,7 @@ privileged aspect BlogPostController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         BlogPost blogPost = BlogPost.fromJsonToBlogPost(json);
+        blogPost.setId(id);
         if (blogPostService.updateBlogPost(blogPost) == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }

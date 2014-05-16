@@ -13,27 +13,33 @@ import java.util.List;
 privileged aspect BlogUser_Roo_Json {
     
     public String BlogUser.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
+        return new JSONSerializer()
+        .exclude("*.class").serialize(this);
     }
     
     public String BlogUser.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+        return new JSONSerializer()
+        .include(fields).exclude("*.class").serialize(this);
     }
     
     public static BlogUser BlogUser.fromJsonToBlogUser(String json) {
-        return new JSONDeserializer<BlogUser>().use(null, BlogUser.class).deserialize(json);
+        return new JSONDeserializer<BlogUser>()
+        .use(null, BlogUser.class).deserialize(json);
     }
     
     public static String BlogUser.toJsonArray(Collection<BlogUser> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
+        return new JSONSerializer()
+        .exclude("*.class").serialize(collection);
     }
     
     public static String BlogUser.toJsonArray(Collection<BlogUser> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+        return new JSONSerializer()
+        .include(fields).exclude("*.class").serialize(collection);
     }
     
     public static Collection<BlogUser> BlogUser.fromJsonArrayToBlogUsers(String json) {
-        return new JSONDeserializer<List<BlogUser>>().use(null, ArrayList.class).use("values", BlogUser.class).deserialize(json);
+        return new JSONDeserializer<List<BlogUser>>()
+        .use("values", BlogUser.class).deserialize(json);
     }
     
 }
